@@ -7,6 +7,8 @@ import (
 
 pub struct Conn {
   sock net.Socket
+
+mut:
   mutex sync.Mutex
 }
 
@@ -33,7 +35,7 @@ fn (c Conn) read_line() string {
   return res
 }
 
-pub fn (c Conn) do(args []string) ?[]string {
+pub fn (c mut Conn) do(args []string) ?[]string {
   mut req := '*'
   req += args.len.str()
   req += '\r\n'
