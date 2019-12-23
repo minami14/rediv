@@ -45,9 +45,12 @@ pub fn (c Conn) do(args []string) ?[]string {
     req += '\r\n'
   }
 
+  c.mutex.lock()
+  defer { c.mutex.unlock() }
   c.sock.send(req.str, req.len) or {
     return error(err)
   }
+
   resp := c.read_line()
   match resp[0..1] {
     '+' { return resp[1..resp.len] }
