@@ -50,7 +50,8 @@ pub fn (c Conn) do(args []string) ?[]string {
   }
   resp := c.read_line()
   match resp[0..1] {
-    '+' { return ['ok'] }
+    '+' { return resp[1..resp.len] }
+    '-' { return error(resp[1..resp.len]) }
     '$' { 
       len := resp[1..resp.len].int()
       if len <= 0 {
