@@ -54,18 +54,18 @@ pub fn (c mut Conn) do(args []string) ?[]string {
   }
 
   resp := c.read_line()
-  match resp[0..1] {
-    '+' { return [resp[1..resp.len]] }
-    '-' { return error(resp[1..resp.len]) }
-    ':' { return [resp[1..resp.len]] }
-    '$' { 
+  match resp[0] {
+    `+` { return [resp[1..resp.len]] }
+    `-` { return error(resp[1..resp.len]) }
+    `:` { return [resp[1..resp.len]] }
+    `$` { 
       len := resp[1..resp.len].int()
       if len <= 0 {
         return []string
       }
       return [c.read_line()]
     }
-    '*' {
+    `*` {
       mut res := []string
       len := resp[1..resp.len].int()
       for i := 0; i < len; i++ {
